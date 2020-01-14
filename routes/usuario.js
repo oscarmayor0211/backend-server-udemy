@@ -30,7 +30,7 @@ app.get('/', (request, response, next) => {
     desde = Number(desde);
 
     //query para solo traer el nombre email img y role
-    Usuario.find({}, 'nombre email img role')
+    Usuario.find({}, 'nombre email img role google')
         .skip(desde) //funcion del mongoose para que salte el numero
         .limit(5)
         .exec((err, usuarios) => {
@@ -62,7 +62,7 @@ app.get('/', (request, response, next) => {
 //==============================
 // Crear un nuevo usuario
 //==============================
-app.post('/', mdAutenticacion.verificaToken, (req, res) => {
+app.post('/', (req, res) => {
 
     var body = req.body;
 
@@ -98,7 +98,7 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
 // Actualizar usuario
 //==============================
 
-app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
+app.put('/:id', [mdAutenticacion.verificaToken, mdAutenticacion.verifica_ADMIN_O_MISMOUSUARIO], (req, res) => {
 
     var id = req.params.id;
 
@@ -148,7 +148,7 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
 //==============================
 // Borrar un usuario
 //==============================
-app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
+app.delete('/:id', [mdAutenticacion.verificaToken, mdAutenticacion.verifica_AMINROLE], (req, res) => {
 
     var id = req.params.id;
 
